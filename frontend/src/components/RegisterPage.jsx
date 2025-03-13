@@ -13,8 +13,11 @@ const RegisterPage = () =>{
 
 
 const handleRegister = async (e) => {
+  e.preventDefault();
     try{
         const response = await AuthServices.register(userName, email, passWord);
+        console.log(userName + " " + passWord + " " + email );
+        console.log(response.json);
         setMessage(response.data);
         if(response == "User registered successfully"){
             navigate("/login");
@@ -22,7 +25,8 @@ const handleRegister = async (e) => {
     }
     catch(error){
         setMessage("Registration Failed");
-    }
+        console.log(userName);
+      }
 };
 
 return(

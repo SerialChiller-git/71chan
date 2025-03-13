@@ -14,6 +14,7 @@ class AuthService {
             throw new Error("Failed to register");
         }
 
+        console.log(response.json());
         return response.text(); 
     }
 
