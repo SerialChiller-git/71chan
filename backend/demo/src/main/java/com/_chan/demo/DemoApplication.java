@@ -1,5 +1,7 @@
 package com._chan.demo;
 
+import java.util.HashSet;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,8 +22,16 @@ public class DemoApplication {
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepo , UserRepository userRepo){
 		return args -> {
-			roleRepo.save(new Role(1, "KEK"));
+			// Save role without setting ID manually
+			Role role = new Role();
+			role.setAuthority("KEK");  // Assuming "authority" is the role name field
+			roleRepo.save(role);
 			User u = new User();
+			u.setUsername("serial");
+			HashSet<Role> roles = new HashSet<>();
+			roles.add(roleRepo.findByAuthority("KEK").get());
+			u.setAuthorities(roles);
+			userRepo.save(u);
 		};
 	}
 
