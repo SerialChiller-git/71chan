@@ -14,10 +14,15 @@ import com._chan.demo.model.User;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public AuthenticationController(UserService userService){
+        this.userService = userService;
+    }
+
     @GetMapping("/login")
     public ResponseEntity<String> login(User user) {
         try{
