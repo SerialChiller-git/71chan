@@ -1,5 +1,7 @@
 package com._chan.demo.service;
 
+import com._chan.demo.exceptions.UsernameAlreadyTakenException;
+import com._chan.demo.model.RegistrationObject;
 import com._chan.demo.model.User;
 import com._chan.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,15 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder passEncoder;
-    public Optional<User> register(User user){
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+    public Optional<User> register(RegistrationObject ro){
+        Optional<User> existingUser = userRepository.findByUsername(ro.getUsername());
         if(existingUser.isPresent()){
-            throw new RuntimeException("User already exists!");
+            throw new UsernameAlreadyTakenException();
         }
-        user.setPassword(passEncoder.encode(user.getPassword()));
+        User user = new User();
+        user.setEmail(ro.getEmail());
+        user.setUsername(ro.getUsername());
+        user.setPassword(passEncoder.encode(ro.getPassword()));
         return Optional.of(userRepository.save(user));
     }
     public Optional<User> login(User user){

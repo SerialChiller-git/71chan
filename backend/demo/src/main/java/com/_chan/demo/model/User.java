@@ -32,7 +32,7 @@ public class User {
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "email")
